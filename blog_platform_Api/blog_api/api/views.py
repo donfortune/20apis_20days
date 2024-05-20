@@ -63,3 +63,19 @@ def createPost(request):
     )
     serializer = serializers.postSerializer(new_post, many=False)
     return Response(serializer.data)
+
+@api_view(['PUT'])
+def updatePost(request, id):
+    data = request.data
+    post = Post.objects.get(id=id)
+    post.title = data['title']
+    post.content = data['content']
+    post.save()
+    serializer = serializers.postSerializer(post, many=False)
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+def deletePost(request, id):
+    post = Post.objects.get(id=id)
+    post.delete()
+    return Response('Post deleted successfully')

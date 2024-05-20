@@ -11,5 +11,7 @@ urlpatterns = [
     path('protected/', views.protected_view, name='protected'),
     path('api/posts/', views.getPosts, name='posts'),
     path('api/posts/<int:id>/', views.getPost, name='post'),
-    path('api/posts/create/', views.createPost, name='create_post')
+    path('api/posts/create/', views.createPost, name='create_post'),
+    path('api/posts/<int:id>/update/', views.updatePost, name='update_post'),
+    path('api/posts/<int:id>/delete/', views.deletePost, name='delete_post'),
 ]
