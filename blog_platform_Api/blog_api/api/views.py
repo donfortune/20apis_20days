@@ -1,7 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from . import serializers
-#from rest_framework.permissions import IsAuthenticated
+from .models import *
+
 
 # Create your views here.
 @api_view(['GET'])
@@ -39,3 +40,26 @@ def home(request):
 
 def protected_view(request):
     return Response({'message': 'This is a protected view, only accessible to authenticated users.'})
+
+@api_view(['GET'])
+def getPosts(request):
+    posts = Post.objects.all()
+    serializer = serializers.postSerializer(posts, many=True)
+    return Response(serializer.data)
+    
+@api_view(['GET'])
+def getPost(request, id):
+    post = Post.objects.get(id=id)
+    serializer = serializers.postSerializer(post, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def createPost(request):
+    data = request.data
+    new_post = Post.objects.create(
+        title=data['title'],
+        content=data['content'],
+        #author=data['author']
+    )
+    serializer = serializers.postSerializer(new_post, many=False)
+    return Response(serializer.data)
