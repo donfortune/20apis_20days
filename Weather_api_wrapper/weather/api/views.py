@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import requests
 from django.http import JsonResponse
 from django.conf import settings
@@ -31,3 +32,8 @@ def get_weather(request):
     else:
         # Handle error if request fails
         return JsonResponse({'error': 'Failed to retrieve weather information'}, status=500)
+=======
+from django.shortcuts import render
+from django
+# Create your views here.
+>>>>>>> ada43e41de69b6c16be1a789b1872d6f90731e68
