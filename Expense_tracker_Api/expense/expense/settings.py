@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     
 ]
 
@@ -133,5 +135,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_USE_SSL = True
 # EMAIL_HOST_USER = 'xxxxxx'
 # EMAIL_HOST_PASSWORD = 'xxxxx'
+
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
 
 

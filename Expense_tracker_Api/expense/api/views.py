@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .forms import customUserCreationForm, customAuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from restframework.pagination import PageNumberPagination
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import ProductFilter
 
 # Create your views here.
 
