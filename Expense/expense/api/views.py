@@ -2,8 +2,13 @@ from django.shortcuts import render, redirect
 from .forms import customUserCreationForm, customAuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework_simplejwt.tokens import RefreshToken
+from .models import *
+from .serializers import *
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
 
 
 # Create your views here.
@@ -70,3 +75,36 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
+def get_Expenses(request):
+    expenses = Expenses.objects.all()
+    serializer = ExpensesSerializer(expenses, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_Expense(request, id):
+    expense = Expenses.objects.get(id=id)
+    serializer = ExpensesSerializer(expense, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def update_Expenses(request, id):
+    data - request.data
+    expense = Expenses.objects.get(id=data['id'])
+    serializer = ExpensesSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
+def get_Products(request):
+    products = Product.objects.all()
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data)
+
