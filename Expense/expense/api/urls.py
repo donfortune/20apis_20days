@@ -18,5 +18,6 @@ urlpatterns = [
     path('api/get_expense/<int:id>/', views.get_Expense, name='get_product'),
     path('api/update_expense/<int:id>/', views.update_Expenses, name='update_product'),
     path('api/products/', views.get_Products, name='get_products'),
+    path('expenses/', views.expense_list, name='expenses')
 
 ]

@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import *
 from .serializers import *
 from rest_framework.response import Response
@@ -82,13 +83,13 @@ def user_logout(request):
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def get_Expenses(request):
-    expenses = Expenses.objects.all()
+    expenses = Expense.objects.all()
     serializer = ExpensesSerializer(expenses, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def get_Expense(request, id):
-    expense = Expenses.objects.get(id=id)
+    expense = Expense.objects.get(id=id)
     serializer = ExpensesSerializer(expense, many=False)
     return Response(serializer.data)
 
@@ -97,7 +98,7 @@ def get_Expense(request, id):
 @permission_classes([AllowAny])
 def update_Expenses(request, id):
     data = request.data
-    expense = Expenses.objects.get(id=id)
+    expense = Expense.objects.get(id=id)
     serializer = ExpensesSerializer(expense, data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -113,7 +114,31 @@ def get_Products(request):
     return Response(serializer.data)
 
 
-@api_view(['GET', 'POST'])
-@permission_classes([AllowAny])
-def expense_list(request)
 
+@api_view(['GET'])
+@permission_classes([AllowAny]) 
+def expense_list(request):
+    
+    expenses = Expense.objects.filter(user=request.user.id)  # Filter based on authenticated user
+    filterset = ExpenseFilter(request.GET, queryset=expenses)
+    if filterset.is_valid():
+        expenses = filterset.qs
+    serializer = ExpenseSerializer(expenses, many=True)
+    return Response(serializer.data)
+
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])  # Ensure that only authenticated users can access
+# def expense_list(request):
+#     print("Authenticated user:", request.user)  # Debug: print authenticated user
+#     expenses = Expense.objects.filter(user=request.user)  # Filter based on authenticated user
+#     print("Expenses for user:", expenses)  # Debug: print user's expenses before filtering
+
+#     filterset = ExpenseFilter(request.GET, queryset=expenses)
+#     if filterset.is_valid():
+#         expenses = filterset.qs
+#     else:
+#         print("Filter errors:", filterset.errors)  # Debug: print filter errors
+
+#     print("Filtered expenses:", expenses)  # Debug: print expenses after filtering
+#     serializer = ExpenseSerializer(expenses, many=True)
+#     return Response(serializer.data)

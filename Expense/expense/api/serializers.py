@@ -7,7 +7,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = '__all__'
 
-class ExpensesSerializer(serializers.ModelSerializer):
+class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Expenses
+        model = Expense
         fields = '__all__'
