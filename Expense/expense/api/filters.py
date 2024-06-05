@@ -1,11 +1,12 @@
 import django_filters
 from .models import *
 
-class ProductFilter(django_filters.FilterSet):
-    min_price = django_filters.NumberFilter(field_name="price", lookup_expr='gte')
-    max_price = django_filters.NumberFilter(field_name="price", lookup_expr='lte')
-    category = django_filters.CharFilter(lookup_expr='icontains')
-    brand = django_filters.CharFilter(lookup_expr='icontains')
+class ExpenseFilter(django_filters.FilterSet):
+    start_date = django_filters.DateFilter(field_name="created_at", lookup_expr='gte')
+    end_date = django_filters.DateFilter(field_name="created_at", lookup_expr='lte')
+    category = django_filters.ChoiceFilter(choices=Expense.CATEGORY_CHOICES)
+    product = django_filters.CharFilter(field_name='product__name', lookup_expr='iexact')
+
     class Meta:
-        model = Product
-        fields = ['category', 'brand', 'price']
+        model = Expense
+        fields = ['start_date', 'end_date', 'category', 'product']
