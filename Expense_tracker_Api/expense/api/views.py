@@ -2,9 +2,17 @@ from django.shortcuts import render, redirect
 from .forms import customUserCreationForm, customAuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from restframework.pagination import PageNumberPagination
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
-from .filters import ProductFilter
+from .models import *
+from .serializers import *
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .filters import *
+
+
 
 # Create your views here.
 
@@ -29,6 +37,7 @@ def home(request):
 #         form = customUserCreationForm()
 #     return render(request, 'register.html', {'form': form})
 
+@api_view(['POST'])
 def register(request):
     if request.method == 'POST':
         form = customUserCreationForm(request.POST)
@@ -39,6 +48,8 @@ def register(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
+                refresh = RefreshToken.for_user(user)
+
                 # Redirect to the desired page after successful registration
                 return redirect('home')  # Assuming 'home' is your landing page
             else:
@@ -47,6 +58,7 @@ def register(request):
         form = customUserCreationForm()
     return render(request, 'register.html', {'form': form})
 
+@api_view(['POST'])
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -54,6 +66,7 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)  # Corrected login function call
+            refresh = RefreshToken.for_user(user)
             return redirect('home')  # Redirect to home page after successful login
         else:
             return redirect('login')
@@ -61,6 +74,71 @@ def user_login(request):
         form = customAuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
+@api_view(['POST'])
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
+def get_Expenses(request):
+    expenses = Expense.objects.all()
+    serializer = ExpensesSerializer(expenses, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_Expense(request, id):
+    expense = Expense.objects.get(id=id)
+    serializer = ExpensesSerializer(expense, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def update_Expenses(request, id):
+    data = request.data
+    expense = Expense.objects.get(id=id)
+    serializer = ExpensesSerializer(expense, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
+def get_Products(request):
+    products = Product.objects.all()
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny]) 
+def expense_list(request):
+    
+    expenses = Expense.objects.filter(user=request.user.id)  # Filter based on authenticated user
+    filterset = ExpenseFilter(request.GET, queryset=expenses)
+    if filterset.is_valid():
+        expenses = filterset.qs
+    serializer = ExpenseSerializer(expenses, many=True)
+    return Response(serializer.data)
+
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])  # Ensure that only authenticated users can access
+# def expense_list(request):
+#     print("Authenticated user:", request.user)  # Debug: print authenticated user
+#     expenses = Expense.objects.filter(user=request.user)  # Filter based on authenticated user
+#     print("Expenses for user:", expenses)  # Debug: print user's expenses before filtering
+
+#     filterset = ExpenseFilter(request.GET, queryset=expenses)
+#     if filterset.is_valid():
+#         expenses = filterset.qs
+#     else:
+#         print("Filter errors:", filterset.errors)  # Debug: print filter errors
+
+#     print("Filtered expenses:", expenses)  # Debug: print expenses after filtering
+#     serializer = ExpenseSerializer(expenses, many=True)
+#     return Response(serializer.data)

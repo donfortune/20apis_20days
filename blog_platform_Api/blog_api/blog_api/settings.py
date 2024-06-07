@@ -77,12 +77,45 @@ WSGI_APPLICATION = 'blog_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+#use mongodb
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'blog_api',
+#         'ENFORCE_SCHEMA': False,
+#         'CLIENT': {
+#             'host': 'mongodb-db',  # Docker container name for MongoDB
+#             'port': 27017,  # MongoDB port
+#             'username': 'admin',  # MongoDB username (if applicable)
+#             'password': 'password',  # MongoDB password (if applicable)
+#             'authSource': 'admin'  # Authentication source (default is 'admin')
+#         }
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'blog_api',
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': 'mongodb-db',  # Use the container name as the hostname
+            'port': 27017,          # MongoDB default port
+        }
     }
 }
+
+
+
+
+
 
 
 # Password validation
