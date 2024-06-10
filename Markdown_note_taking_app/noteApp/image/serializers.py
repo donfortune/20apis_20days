@@ -1,7 +1,7 @@
 from .models import *
-from django import serializers
+from rest_framework import serializers
 
 class photoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PhotoUpload
+        model = photoUpload
         fields = '__all__'
