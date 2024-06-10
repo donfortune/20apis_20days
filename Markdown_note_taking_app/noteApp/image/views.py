@@ -4,6 +4,8 @@ from .models import *
 from .serializers import *
 from rest_framework.response import Response
 import language_tool_python
+import markdown
+import os
 # Create your views here.
 
 
@@ -37,6 +39,14 @@ def check_grammar(request, id):
         tool = language_tool_python.LanguageTool('en-US')
         matches = tool.check(file_content)
         return Response(matches)
+    
+@api_view(['GET'])
+def storeMarkdown(request):
+    if request.method == 'GET':
+        file_path = os.path.join(os.getcwd(), 'files', 'file.md')
+        with open(file_path, 'w') as f:
+            f.write(file_content)
+        # i want to get the corrected file from the check grammar function and then store it in a markdown file
     
 
         
