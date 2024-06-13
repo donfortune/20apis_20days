@@ -47,10 +47,8 @@ def correct_grammar(request, id):
         file_content = file.file.read().decode('latin-1')
         tool = language_tool_python.LanguageTool('en-US')
         matches = tool.check(file_content)
-        
-        is_bad_rule = lambda rule: rule.message == 'Possible spelling mistake found.' and len(rule.replacements) and rule.replacements[0][0].isupper()
-        matches = [rule for rule in matches if not is_bad_rule(rule)]
         corrected_text = language_tool_python.utils.correct(file_content, matches)
+        print(corrected_text)
         return Response({'corrected_text': corrected_text})
     
 
