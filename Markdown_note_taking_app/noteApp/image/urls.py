@@ -7,5 +7,6 @@ urlpatterns = [
     path('api/lists/', views.image_list, name='image_list'),
     path('api/delete/', views.delete_list, name='delete_list'),
     path('api/file/<int:id>/', views.file, name='file'),
-    path('api/file/check/<int:id>/', views.check_grammar, name='check_grammar')
+    path('api/file/check/<int:id>/', views.check_grammar, name='check_grammar'),
+    path('api/file/correct/<int:id>/', views.correct_grammar, name='correct_grammar'),
 ]
