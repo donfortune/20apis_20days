@@ -48,23 +48,13 @@ def correct_grammar(request, id):
         tool = language_tool_python.LanguageTool('en-US')
         matches = tool.check(file_content)
         corrected_text = language_tool_python.utils.correct(file_content, matches)
+        html = markdown.markdown(corrected_text)
         print(corrected_text)
-        return Response({'corrected_text': corrected_text})
-    
+        return Response({'corrected_text': corrected_text, 'html': html})
 
 
 
-
-
-
-    
-@api_view(['GET'])
-def storeMarkdown(request):
-    if request.method == 'GET':
-        file_path = os.path.join(os.getcwd(), 'files', 'file.md')
-        with open(file_path, 'w') as f:
-            f.write(file_content)
-        # i want to get the corrected file from the check grammar function and then store it in a markdown file
+        
     
 
         
