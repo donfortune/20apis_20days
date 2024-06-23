@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app_web',
-    
     'channels',
 ]
 
@@ -71,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'realtime_app.wsgi.application'
+#WSGI_APPLICATION = 'realtime_app.wsgi.application'
 
 
 # Database
@@ -126,11 +125,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ASGI_APPLICATION = 'realtime_app.asgi.application'
+
 
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
+
+ASGI_APPLICATION = 'realtime_app.asgi.application'
 
