@@ -11,7 +11,27 @@ class OrderSerializer(serializers.ModelSerializer):
         model = models.Order
         fields = '__all__'
 
-class ProductCartSerializer(serializers.ModelSerializer):
+class OrderItemSerializer(serializers.ModelSerializer):        
     class Meta:
-        model = models.ProductCart
-        fields = '__all__'  
+        model = models.OrderItem
+        fields = '__all__'
+
+class CartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Cart
+        fields = '__all__'
+
+class CartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.CartItem
+        fields = '__all__'
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Payment
+        fields = '__all__'
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = '__all__'
