@@ -56,7 +56,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,3 +123,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51PWzqnRoDMxLjhkoMQPNnJfI2CJ1gsieJP1r1tY3rwi44oXB0aFqt8fORMyPotdr05rEx3JzJHCtxTmSgI5ax36100ijD9YX1r'
+STRIPE_SECRET_KEY = 'sk_test_51PWzqnRoDMxLjhko99CnhDxcFPVSNKr8mApVlBtAdNVZ52cMeAm711FTeCZwpLDbOC0G0dpWhB5oykHFDOylnmuY00IVwChQ8j'

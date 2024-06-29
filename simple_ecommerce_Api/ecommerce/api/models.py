@@ -48,11 +48,25 @@ class CartItem(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"
 
-class Payment(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    payment_method = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+# class Payment(models.Model):
+#     cart_items = models.ManyToManyField(CartItem)
+#     order = models.ForeignKey(Order, on_delete=models.CASCADE)
+#     order_items = models.ManyToManyField(OrderItem)
+#     payment_method = models.CharField(max_length=255)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
     
+#     def __str__(self):
+#         return f"Payment for order {self.order.id}"
+
+from django.contrib.auth.models import User
+from django.db import models
+
+class Payment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)  # Link payment to a user
+    stripe_id = models.CharField(max_length=255)
+    amount = models.FloatField(default=0.0)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
-        return f"Payment for order {self.order.id}"
+        return f"Payment of {self.amount} by {self.user.username}"

@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import *
 
 
 urlpatterns = [
@@ -12,4 +13,6 @@ urlpatterns = [
     path('order-items/', views.orderItems, name='order-items'),
     path('order-item/<int:id>/', views.orderItem, name='order-item'),
     path('create-order/', views.createOrderItem, name='create-order'),
+
+    path('payment/', PaymentView.as_view(), name='payment'),
 ]
